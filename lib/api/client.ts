@@ -74,6 +74,7 @@ export const api = {
     createInvite: (chatId: string) => call("POST", p("chats", chatId, "invite"), groups.inviteResponseSchema),
     revokeInvite: (chatId: string) => call("DELETE", p("chats", chatId, "invite"), okResponseSchema),
     join: (token: string) => call("POST", p("join", token), groups.joinResponseSchema),
+    preview: (token: string) => call("GET", p("join", token), groups.joinPreviewResponseSchema),
     leave: (chatId: string, body: groups.LeaveRequest) =>
       call("POST", p("chats", chatId, "leave"), okResponseSchema, {
         body: v(groups.leaveRequestSchema, body),
