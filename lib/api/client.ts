@@ -149,5 +149,10 @@ export const api = {
       call("PATCH", p("admin", "config"), admin.updateConfigResponseSchema, {
         body: v(admin.updateConfigRequestSchema, body),
       }),
+    spend: () => call("GET", p("admin", "spend"), admin.adminSpendResponseSchema),
+    setUserCanContribute: (uid: string, body: admin.SetUserCanContributeRequest) =>
+      call("PATCH", p("admin", "users", uid, "can-contribute"), okResponseSchema, {
+        body: v(admin.setUserCanContributeRequestSchema, body),
+      }),
   },
 };
