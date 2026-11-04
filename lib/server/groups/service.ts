@@ -101,25 +101,15 @@ export async function convertChat(
       joinedAt: Timestamp.now(),
     };
 
-    await newChatRef.set({
-      ownerId: user.uid,
-      title: chat.title,
-      createdAt: FieldValue.serverTimestamp(),
-      lastMessageAt: FieldValue.serverTimestamp(),
-      memberIds: [user.uid],
-      members: { [user.uid]: ownerMember },
-      inviteToken: token,
-      inviteActive: true,
-      forkedFrom: chatId,
-      aiInFlight: {},
-      uploadCounts: { [user.uid]: 0 },
-    });
-
+    let userCopiedCount = 0;
     const bucket = adminBucket();
     for (const fileId of body.fileIds) {
       const oldFileSnap = await chatRef.collection("files").doc(fileId).get();
       if (oldFileSnap.exists) {
         const oldFile = oldFileSnap.data() as FileDoc;
+        if (oldFile.uploaderId === user.uid) {
+          userCopiedCount++;
+        }
         const newFileRef = newChatRef.collection("files").doc();
         const newFileId = newFileRef.id;
 
@@ -135,6 +125,20 @@ export async function convertChat(
         });
       }
     }
+
+    await newChatRef.set({
+      ownerId: user.uid,
+      title: chat.title,
+      createdAt: FieldValue.serverTimestamp(),
+      lastMessageAt: FieldValue.serverTimestamp(),
+      memberIds: [user.uid],
+      members: { [user.uid]: ownerMember },
+      inviteToken: token,
+      inviteActive: true,
+      forkedFrom: chatId,
+      aiInFlight: {},
+      uploadCounts: { [user.uid]: userCopiedCount },
+    });
 
     await newChatRef.collection("messages").add({
       senderType: "system",

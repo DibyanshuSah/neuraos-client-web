@@ -55,9 +55,9 @@ All chat API routes use the segment `app/api/chats/[chatId]/`.
 - [x] **Groups integration**: `components/groups/**`, `app/join/**`, header group actions. Test with 2–3 accounts, then set `config/app.groupsEnabled` to `true`.
 - [x] **Gap** `GET /api/admin/spend` (sum of today's spend shards) wired into the admin `SpendCard` and Settings (both show "—" today)
 - [x] **Gap** Admin route to set a user's `canContribute`, wired to the switch in the user drawer (read-only today)
-- [ ] **Gap** Referral names on the profile, if cheap
+- [x] **Gap** Referral names on the profile, if cheap (evaluated: omitted as not cheap per SPEC §5 data model and privacy rules)
 - [x] **Release readiness**: `bun run build` passes; no `lib/fixtures` imports in real pages (preview mode only); `firestore.indexes.json` lists every index the app's queries need; `apphosting.yaml` up to date
-- [ ] **E2E** SPEC.md section 16 "Uploads" and "Groups" checklists
+- [x] **E2E** SPEC.md section 16 "Uploads" and "Groups" checklists
 
 ## Dhruti — review, verify, deploy
 

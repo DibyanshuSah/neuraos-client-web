@@ -128,9 +128,14 @@ export async function completeFileUpload(
   }
 
   // Increment upload quota in chat doc
-  await chatRef.update({
-    [`uploadCounts.${user.uid}`]: FieldValue.increment(1),
-  });
+  await chatRef.set(
+    {
+      uploadCounts: {
+        [user.uid]: FieldValue.increment(1),
+      },
+    },
+    { merge: true },
+  );
 
   // Run AI extraction
   try {
